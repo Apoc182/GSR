@@ -42,7 +42,7 @@ include "mysql_con.php";
 			<section class="grid_18">
 				<br>
 				<h2 id="filtering" style="margin-bottom:20px;">Filters</h2>
-				<?php include "filters.html" ?>
+				<?php include "filters.php" ?>
 				<br>
 				<ul class="article_list revpage">
 

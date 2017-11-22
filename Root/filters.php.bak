@@ -1,0 +1,58 @@
+
+
+
+<?php
+  function loadFilterButtons() { ?>
+  <ul>
+    <li class="tablinks" id="review_only" > Review Only </li>
+    <li class="tablinks"  id="guide_only" > Guide Only </li>
+    <li class="tablinks"  id="news_only" > News Only </li>
+    <li class="tablinks"  id="opinion_only" > Opinion Only </li>
+    <li class="tablinks"  id="reset_filters" > Reset Filters </li>
+  </ul>
+
+<?php  } ?>
+
+
+
+
+
+<script>
+$(document).ready(function() {
+  $('#review_only').click(function() {
+    $(".thumbnail_Guide").hide();
+    $(".thumbnail_Opinion").hide();
+    $(".thumbnail_News").hide();
+    $(".thumbnail_Review").show();
+  });
+
+  $('#guide_only').click(function() {
+    $(".thumbnail_Review").hide();
+    $(".thumbnail_Opinion").hide();
+    $(".thumbnail_News").hide();
+    $(".thumbnail_Guide").show();
+  });
+
+  $('#opinion_only').click(function() {
+    $(".thumbnail_Guide").hide();
+    $(".thumbnail_Review").hide();
+    $(".thumbnail_News").hide();
+    $(".thumbnail_Opinion").show();
+  });
+
+  $('#news_only').click(function() {
+    $(".thumbnail_Guide").hide();
+    $(".thumbnail_Opinion").hide();
+    $(".thumbnail_Review").hide();
+    $(".thumbnail_News").show();
+  });
+
+  $('#reset_filters').click(function() {
+    $(".thumbnail_Guide").show();
+    $(".thumbnail_Opinion").show();
+    $(".thumbnail_Review").show();
+    $(".thumbnail_News").show();
+  });
+});
+
+</script>

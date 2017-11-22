@@ -13,7 +13,7 @@
 			if(isset($_GET['key']) && !empty($_GET['key']) && $_GET['key']!=""){
 			$fgKEY = $_GET['key'];
 			$fgTYPE = 'key';
-			
+
 			$keyQRY = mysqli_query($con, "SELECT * FROM tbl_resets WHERE unique_key = '$fgKEY'");
 			if(mysqli_num_rows($keyQRY)>0){
 			while ($keyInfo = mysqli_fetch_array($keyQRY)) {
@@ -25,11 +25,11 @@
 			}
 			}
 			else{
-			header("location:index.php");	
+			header("location:index.php");
 			}
 			}
 			else{
-			header("location:index.php");	
+			header("location:index.php");
 			}
 		}
 		if($_GET['type']=="success"){
@@ -45,7 +45,7 @@
 	else if(!isset($_GET['type'])){
 		header("location:index.php");
 	}
-	
+
 ?>
 
 <!doctype html>
@@ -55,7 +55,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="index, follow, noarchive">
-		        <?php 
+		        <?php
 				if($fgTYPE=='success'){echo '<title>Email Sent | Forgot | GSR</title>';}
 				if($fgTYPE=='pass'){echo '<title>Forgot Password For Account | Forgot | GSR</title>';}
 				if($fgTYPE=='user'){echo '<title>Forgot Username For Account | Forgot | GSR</title>';}
@@ -77,8 +77,8 @@
 
 		<article class="blog grid_0_top">
 			<section class="grid_24" id="forgotpage">
-		        <?php 
-				if($fgTYPE=='success'){echo '<h1 class="grid_16">EMAIL SENT - GSR</h1>';} 
+		        <?php
+				if($fgTYPE=='success'){echo '<h1 class="grid_16">EMAIL SENT - GSR</h1>';}
 				if($fgTYPE=='pass'){echo '<h1 class="grid_16">FORGOT PASSWORD - GSR</h1>';}
 				if($fgTYPE=='user'){echo '<h1 class="grid_16">FORGOT USERNAME - GSR</h1>';}
 				if($fgTYPE=='key'){echo '<h1 class="grid_16">CHANGE PASSWORD - GSR</h1>';}
@@ -125,7 +125,7 @@
 				<?php if($fgTYPE=='key'){ ?>
 					<form id="forgotkey" method="get" action="" autocomplete="off">
 					<div class="description">
-					<?php 
+					<?php
 					if($key_question>0){
 					echo 'Please enter the answer to your security question, then enter your new password and confirm it.';
 					}
@@ -216,10 +216,10 @@
 					<?php if($key_question>0){ ?>
 					answer_key: {
 					required: true,
-					remote: { 
-					url:avaURL, 
+					remote: {
+					url:avaURL,
 					data: {'answer_key_check':function(){return $('#key_key').val()}},
-					async:false 
+					async:false
 					}
 					},
 					<?php } ?>
@@ -254,7 +254,7 @@
 					},
 					confirm_key: {
 					equalTo: "Passwords must match."
-					}					
+					}
 				},
 				errorElement: "div",
 				errorPlacement: function(error, element) {
@@ -276,8 +276,8 @@
 			        });
 				}
 			});
-			
-			
+
+
 			$("#forgotpass").validate({
 				ignore: [],
 				rules: {
@@ -358,9 +358,9 @@
 			        });
 				}
 			});
-			
-			
-			
+
+
+
 		});
 	</script>
 

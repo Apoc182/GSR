@@ -3,6 +3,7 @@ include ("mysql_con.php");
 include ("timecal.php");
 include ("links.php");
 include ("header.php");
+
 $browserUSER = $_SESSION['username']; // User that starts the session
 if (isset($browserUSER)) {
 	$stmt = mysqli_prepare($con, "SELECT id, friends FROM tbl_accounts WHERE username = ?") or die("Unable to prepare statement: " . mysqli_error($con));
@@ -147,6 +148,8 @@ if (!empty($pr_badges) || $pr_badges != NULL || $pr_badges != "") { // If the us
 }
 /* Number of articles */
 $articles_info = array();
+
+
 $num_views = 0;
 $user_bites = 0;
 $stmt = mysqli_prepare($con, $query_user_articles) or die("Unable to prepare statement: " . mysqli_error($con));
@@ -158,18 +161,26 @@ if ($stmt) {
 		if ($art_type === "Guide") {
 			$images = unserialize($art_image);
 			$article = array($art_rate, $art_type, $art_title, $art_author, $art_gamename, $images[0], $art_views, $art_date, $art_bites);
+
+
 			$num_views += $art_views;
 			$user_bites += $art_bites;
 		} else {
 			$article = array($art_rate, $art_type, $art_title, $art_author, $art_gamename, $art_image, $art_views, $art_date, $art_bites);
+
+
 			$num_views += $art_views;
 			$user_bites += $art_bites;
 		}
 		array_push($articles_info, $article);
+
+
 	}
 	mysqli_stmt_close($stmt);
 }
 $num_rows = sizeof($articles_info);
+
+
 if ($num_rows == 1) {
 	$user_articles = 1;
 	$text_articles = "article";
@@ -201,6 +212,8 @@ function cmp($a, $b){
   return ($ad - $bd);
 }
 usort($articles_info, 'cmp');
+
+
 ?>
 
 <!doctype html>
@@ -382,43 +395,101 @@ usort($articles_info, 'cmp');
 					</tr>
 				</table>
 			</div>
+			<div id="Articles" class="tabcontent"><br>
+				<div id="Filters">
 
-			<div id="Articles" class="tabcontent">
+					<!-- Here is a call to a php function which loads in the filter buttons. Currently needs work on the arrange_by buttons -->
+
+
+					<?php #loadFilterButtons() ?> <!-- This too -->
+
+
+					<?php
+						$JSViews = [];
+
+						for ($i = 0; $i < sizeof($articles_info); $i++) {
+							array_push($JSViews, $articles_info[$i][6]);
+						}
+						include "filters.php"
+
+						?>
+
+
+				</div>
 				<?php
 				if(!empty($articles_info)) {
+
+
 					?>
-					<div class="articlesThumbnail">
+
+					<div class="articlesThumbnail" style="padding-top:100px;" id="article_box"> <!-- JL added style and id for debugging -->
+
+
+
 						<?php
 						for ($i = 0; $i <= sizeof($articles_info) - 1; $i++) {
+
+
 						  // If the article does not have images.
 						  if (!empty($articles_info[$i][5])) {
+
+
+
+
 						    $imgURL = $articles_info[$i][1] . "/" . urlencode($articles_info[$i][5]);
+
+
 						  } else {
 						    $imgURL = "gsr_raw_logo.jpg";
 						  }
 						  ?>
-						  <span class="thumbnail_<?php echo $articles_info[$i][1]; ?>">
+							<!--Added data-order attribute for sorting-->
+						  <span class="thumbnail_<?php echo $articles_info[$i][1]; ?>" data-order=<?php echo $i ?>>
+
+
 						    <a href="<?php echo $articles_info[$i][1]; ?>.php?t=<?php echo urlencode(str_replace(' ', '_', $articles_info[$i][2])); ?>&g=<?php echo urlencode(str_replace('' , '_', $articles_info[$i][4])); ?>">
+
+
 						      <div class="thumbnail_gradient">
 						        <img class="article_image" src="imgs/<?php echo $imgURL; ?>" alt="<?php echo $articles_info[$i][2]?>">
+
+
 						      </div>
 						      <p class="title_articles"><?php echo $articles_info[$i][2]; ?></p>
+
+
 						    </a>
 						    <div class="thumbnail_container_<?php echo $articles_info[$i][1]; ?>">
+
+
 						      <span class="container_title"><?php echo $articles_info[$i][1]; ?></span>
+
+
 						      <?php
 						      if (!strcmp($articles_info[$i][1], "Review")) {
+
+
 						        ?>
 						        <span class="container_score"><?php echo $articles_info[$i][0]; ?></span>
+
+
 						        <?php
 						      }
 						      ?>
 						    </div>
 						    <div class="thumbnail_container1_<?php echo $articles_info[$i][1]; ?>">
+
+
 						      <span class="author_date">by<br> <?php echo $articles_info[$i][3]; ?><br> <?php echo date('jS M Y', strtotime($articles_info[$i][7])); ?></span>
+
+
 						      <span class="thumbnail_stats">
 						        <span class="thumbnail_stats1"><img src="imgs/stats_icons/views_icon.png"><?php echo $articles_info[$i][6] . " " . $text_view; ?></span>
+
+
 						        <span class="thumbnail_stats1"><img src="imgs/stats_icons/bites_icon.png"><?php echo $articles_info[$i][8] . " " . $text_bite; ?></span>
+
+
 						      </span>
 						    </div>
 						  </span>
@@ -428,7 +499,11 @@ usort($articles_info, 'cmp');
 					</div>
 					<?php
 					if (sizeof($articles_info) > 9) {
+
+
 					  //$num_articles = ceil(sizeof($articles_info)/9); // Maximum number of articles to show per page
+
+
 					  ?>
 					  <br>
 					  <div>
@@ -530,6 +605,12 @@ usort($articles_info, 'cmp');
 	</div>
 	<?php include "footer.html"; ?>
 	<script>
+
+	/* Justin Additions */
+
+
+
+
 	/* Refresh the activity tab */
 	var timeout = 60000; //1 minute
 	setInterval(function () {
@@ -586,15 +667,17 @@ usort($articles_info, 'cmp');
 				$("#news").html(data);
 			}
 		});
-		$('#articles_next').on('click', getNext);
-		$('#articles_prev').on('click', getPrev);
 	});
 	/* Creates the 9-Grid */
-	function getNext() {
-		var $curr = ('.articlesThumbnail span:visible'),
-		$next = ($curr.next().length) ? $curr.next() : $('.articlesThumbnail span')
-	}
-
+	$('.articlesThumbnail').slick({
+		dots: false,
+		prevArrow: $('#articles_prev'),
+		nextarrow: $('#articles_next'),
+		infinite: false,
+		speed: 300,
+		slidesToShow: 9,
+		slidesToScroll: 9
+	});
 	/* Checks that the status is no longer than 250 characters */
 	$('#statusInput').on('keyup', function() {
 		var chars = $(this).val().length;
@@ -623,6 +706,12 @@ usort($articles_info, 'cmp');
 			}
 		});
 	});
+
+
+
+
+
+
 	</script>
 </body>
 </html>

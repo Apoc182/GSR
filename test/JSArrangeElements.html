@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+
+
+<!-- Here is a demonstration of using javascript to sort HTML elements. -->
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<html>
+<body>
+<div class="things" id="filters">
+
+	<div id="2">
+		<ul>
+			<li>This</li>
+			<li>Is</li>
+			<li>List</li>
+			<li>2</li>
+		</ul>
+	</div>
+
+	<div id="3">
+		<ul>
+			<li>This</li>
+			<li>Is</li>
+			<li>List</li>
+			<li>3</li>
+		</ul>
+	</div>
+	
+	<div id="1">
+		<ul>
+			<li>This</li>
+			<li>Is</li>
+			<li>List</li>
+			<li>1</li>
+		</ul>
+	</div>
+	
+	<div id="4">
+		<ul>
+			<li>This</li>
+			<li>Is</li>
+			<li>List</li>
+			<li>4</li>
+		</ul>
+	</div>
+	
+	<div id="5">
+		<ul>
+			<li>This</li>
+			<li>Is</li>
+			<li>List</li>
+			<li>5</li>
+		</ul>
+	</div>
+	
+</div>
+</body>
+
+<script>
+
+	//NOTE TO SELF: Perhaps this can be a function that takes a parametre interchangeable with view, date or whatever you want to organise it by.
+
+	var parent = document.getElementById("filters").children;
+	
+	//Figure out how to extract this information from the database. For now, a hardcoded views array/
+	var arrayViews = [12, 6, 4, 8, 199];
+	
+	//This array will need a better name. It is going to contain the views, followed by the child object that owns it.
+	var newArray = [[], []];
+	
+	
+	//Here, we combine the object with its corresponding view count.
+	for (var i = 0; i < arrayViews.length; i++){
+		newArray[i] = [arrayViews[i], parent[i]];
+		console.log(newArray[i]);
+	}
+	
+	//This is a sort function that arranges the array by the first dimention, in numeric lowest to highest order
+	newArray.sort((function(index){
+		return function(a, b){
+			return (a[index] === b[index] ? 0 : (a[index] < b[index] ? -1 : 1));
+		};
+	})(0));
+	
+	console.log(newArray);
+	
+	//This while loop simply removes the contents of the parent div by ID.
+	while (document.getElementById("filters").hasChildNodes()) {
+		document.getElementById("filters").removeChild(document.getElementById("filters").lastChild);
+	}
+	
+	//This for loop appends the objects from start to finish of the new array.
+	for (var i = 0; i < newArray.length; i++){
+		document.getElementById("filters").appendChild(newArray[i][1])
+	}
+	
+	//And it works!!
+	
+</script>	
+
